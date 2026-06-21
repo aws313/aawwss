@@ -22,7 +22,7 @@ export function HeroSection() {
     setMounted(true)
   }, [])
 
-  const nameLetters = "NAKRA SWA".split("")
+  const nameLetters = " SWA ".split("")
   const titleWords = ["Senior graphic designer & video editor"]
 
   if (!mounted) return null
