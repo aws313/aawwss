@@ -138,7 +138,7 @@ export function HeroSection() {
                 }}
               >
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.webp"
                   alt="NAKRA SWA Logo"
                   width={220}
                   height={220}

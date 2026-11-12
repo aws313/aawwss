@@ -172,7 +172,7 @@ export function VideosSection() {
                       muted
                       loop
                       playsInline
-                      preload="metadata"
+                      preload="none"
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   ) : (
@@ -242,7 +242,7 @@ export function VideosSection() {
                         muted
                         loop
                         playsInline
-                        preload="metadata"
+                        preload="none"
                         className="absolute inset-0 w-full h-full object-cover"
                       />
                     ) : (
