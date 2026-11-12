@@ -1,9 +1,11 @@
 "use client"
 
-import { useState, useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+import { motion, useInView, AnimatePresence, useAnimation } from 'framer-motion'
 import Image from 'next/image'
 import { ExternalLink, Heart, MessageCircle, Share2 } from 'lucide-react'
+import { type Origin, originProps, openProps, measureOrigin, panelWidthFor } from './origin-reveal'
 
 const posts = [
   { id: 1, title: 'شركة أبواب   ', likes: 2341, comments: 89, color: '#00d4ff', size: 'large', image: '/images/15.webp' },
@@ -23,8 +25,53 @@ const posts = [
 export function PostsGrid() {
   const [hoveredId, setHoveredId] = useState<number | null>(null)
   const [selectedPost, setSelectedPost] = useState<typeof posts[0] | null>(null)
+  const [origin, setOrigin] = useState<Origin | null>(null)
+  const cardControls = useAnimation()
+  const pendingOpen = useRef(false)
   const containerRef = useRef<HTMLElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
+  // Open the expanded view growing out of the tapped post
+  const openFrom = (post: typeof posts[0], el: HTMLElement) => {
+    pendingOpen.current = true
+    setOrigin(measureOrigin(el, panelWidthFor(672)))
+    setSelectedPost(post)
+  }
+
+  // Animate back to the tapped post, then unmount the overlay
+  const closeModal = async () => {
+    if (!selectedPost) return
+    if (origin) {
+      await cardControls.start({ ...originProps(origin), transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } })
+    }
+    setSelectedPost(null)
+  }
+
+  // When the overlay mounts from a tap, start the panel at the post's position
+  useEffect(() => {
+    if (!selectedPost || !origin || !pendingOpen.current) return
+    pendingOpen.current = false
+    cardControls.set(originProps(origin))
+    cardControls.start({ ...openProps, transition: { type: 'spring', stiffness: 170, damping: 22 } })
+  }, [selectedPost, origin, cardControls])
+
+  // Escape closes, and the page does not scroll behind the overlay
+  useEffect(() => {
+    if (!selectedPost) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeModal()
+    }
+    window.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPost])
 
   // Generate random floating positions
   const getFloatingStyle = (index: number, size: string) => {
@@ -86,7 +133,7 @@ export function PostsGrid() {
                 }}
                 onHoverStart={() => setHoveredId(post.id)}
                 onHoverEnd={() => setHoveredId(null)}
-                onClick={() => setSelectedPost(post)}
+                onClick={(e) => openFrom(post, e.currentTarget as HTMLElement)}
               >
                 <motion.div
                   className="w-full h-full min-h-[200px] md:min-h-[250px] rounded-2xl overflow-hidden relative"
@@ -197,16 +244,27 @@ export function PostsGrid() {
         </div>
       </div>
 
-      {/* Expanded view modal */}
-      <AnimatePresence>
+      {/* Expanded view: grows out of the tapped post. Rendered in a portal so page-level
+          transforms cannot shift the fixed overlay away from the viewport. */}
+      {mounted && createPortal(<AnimatePresence>
         {selectedPost && (
           <motion.div
+            key="post-overlay"
             className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-lg p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setSelectedPost(null)}
+            transition={{ duration: 0.35 }}
+            onClick={closeModal}
           >
+            <button
+              type="button"
+              aria-label="إغلاق"
+              onClick={(e) => { e.stopPropagation(); closeModal() }}
+              className="fixed top-5 end-5 z-10 w-11 h-11 rounded-full border border-white/20 bg-background/70 text-foreground text-2xl leading-none flex items-center justify-center"
+            >
+              ×
+            </button>
             <motion.div
               className="max-w-2xl w-full rounded-2xl overflow-hidden"
               style={{
@@ -214,9 +272,7 @@ export function PostsGrid() {
                 border: `2px solid ${selectedPost.color}50`,
                 boxShadow: `0 0 80px ${selectedPost.color}40`,
               }}
-              initial={{ scale: 0.8, opacity: 0, y: 50 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.8, opacity: 0, y: 50 }}
+              animate={cardControls}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Image area */}
@@ -281,7 +337,7 @@ export function PostsGrid() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </section>
   )
 }

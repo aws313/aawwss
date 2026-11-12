@@ -1,8 +1,10 @@
 "use client"
 
-import { useState, useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+import { motion, useInView, AnimatePresence, useAnimation } from 'framer-motion'
 import { Play, Pause, Volume2, VolumeX, Maximize2, Clock, Eye } from 'lucide-react'
+import { type Origin, originProps, openProps, measureOrigin, panelWidthFor } from './origin-reveal'
 
 const videos = [
   { 
@@ -71,8 +73,53 @@ export function VideosSection() {
   const [hoveredId, setHoveredId] = useState<number | null>(null)
   const [playingId, setPlayingId] = useState<number | null>(null)
   const [selectedVideo, setSelectedVideo] = useState<typeof videos[0] | null>(null)
+  const [origin, setOrigin] = useState<Origin | null>(null)
+  const cardControls = useAnimation()
+  const pendingOpen = useRef(false)
   const containerRef = useRef<HTMLElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
+  // Open the player growing out of the tapped video tile
+  const openFrom = (video: typeof videos[0], el: HTMLElement) => {
+    pendingOpen.current = true
+    setOrigin(measureOrigin(el, panelWidthFor(896)))
+    setSelectedVideo(video)
+  }
+
+  // Animate back to the tapped tile, then unmount the player
+  const closeModal = async () => {
+    if (!selectedVideo) return
+    if (origin) {
+      await cardControls.start({ ...originProps(origin), transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } })
+    }
+    setSelectedVideo(null)
+  }
+
+  // When the player mounts from a tap, start the panel at the tile's position
+  useEffect(() => {
+    if (!selectedVideo || !origin || !pendingOpen.current) return
+    pendingOpen.current = false
+    cardControls.set(originProps(origin))
+    cardControls.start({ ...openProps, transition: { type: 'spring', stiffness: 170, damping: 22 } })
+  }, [selectedVideo, origin, cardControls])
+
+  // Escape closes, and the page does not scroll behind the player
+  useEffect(() => {
+    if (!selectedVideo) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeModal()
+    }
+    window.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedVideo])
 
   const featuredVideo = videos.find(v => v.featured)
   const otherVideos = videos.filter(v => !v.featured)
@@ -149,7 +196,7 @@ export function VideosSection() {
                   const el = document.getElementById(`preview-${video.id}`) as HTMLVideoElement | null
                   if (el) { el.pause(); el.currentTime = 0 }
                 }}
-                onClick={() => setSelectedVideo(video)}
+                onClick={(e) => openFrom(video, e.currentTarget as HTMLElement)}
                 className="cursor-pointer"
               >
                 <motion.div
@@ -228,7 +275,7 @@ export function VideosSection() {
                     const el = document.getElementById(`preview-${video.id}`) as HTMLVideoElement | null
                     if (el) { el.pause(); el.currentTime = 0 }
                   }}
-                  onClick={() => setSelectedVideo(video)}
+                  onClick={(e) => openFrom(video, e.currentTarget as HTMLElement)}
                   className="cursor-pointer"
                 >
                   <div
@@ -264,16 +311,27 @@ export function VideosSection() {
         </div>
       </div>
 
-      {/* Video modal */}
-      <AnimatePresence>
+      {/* Video player: grows out of the tapped tile. Rendered in a portal so page-level
+          transforms cannot shift the fixed overlay away from the viewport. */}
+      {mounted && createPortal(<AnimatePresence>
         {selectedVideo && (
           <motion.div
+            key="video-overlay"
             className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-lg p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setSelectedVideo(null)}
+            transition={{ duration: 0.35 }}
+            onClick={closeModal}
           >
+            <button
+              type="button"
+              aria-label="إغلاق"
+              onClick={(e) => { e.stopPropagation(); closeModal() }}
+              className="fixed top-5 end-5 z-10 w-11 h-11 rounded-full border border-white/20 bg-background/70 text-foreground text-2xl leading-none flex items-center justify-center"
+            >
+              ×
+            </button>
             <motion.div
               className="max-w-4xl w-full rounded-2xl overflow-hidden"
               style={{
@@ -281,9 +339,7 @@ export function VideosSection() {
                 border: `2px solid ${selectedVideo.color}50`,
                 boxShadow: `0 0 100px ${selectedVideo.color}30`,
               }}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
+              animate={cardControls}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Video player area */}
@@ -341,7 +397,7 @@ export function VideosSection() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
 
       <style jsx>{`
         @keyframes dash {
