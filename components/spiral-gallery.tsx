@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import { motion, useInView, AnimatePresence, useAnimation } from 'framer-motion'
 
@@ -81,6 +82,8 @@ export function SpiralGallery() {
   const pendingOpen = useRef(false)
   const containerRef = useRef<HTMLElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   const selected = identityProjects.find(p => p.id === selectedId) ?? null
   const selectedIndex = selected ? identityProjects.findIndex(p => p.id === selected.id) : -1
@@ -239,8 +242,9 @@ export function SpiralGallery() {
 
       <p className="mt-6 text-muted-foreground text-xs tracking-wide">مرّر المؤشر لإيقاف الدوران، وانقر لعرض التفاصيل</p>
 
-      {/* Expanded view: grows out of the tapped logo */}
-      <AnimatePresence>
+      {/* Expanded view: grows out of the tapped logo. Rendered in a portal so that
+          page-level transforms cannot shift the fixed overlay away from the viewport. */}
+      {mounted && createPortal(<AnimatePresence>
         {selected && (
           <motion.div
             key="identity-overlay"
@@ -329,7 +333,7 @@ export function SpiralGallery() {
             <p className="fixed bottom-6 text-muted-foreground text-xs">انقر خارج الشعار أو اضغط Esc للإغلاق</p>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </section>
   )
 }
