@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 
-// Visual identity projects with placeholder images
+// Visual identity projects
 const identityProjects = [
   { id: 1, title: 'شعار', category: 'صيدلية  ', color: '#00d4ff', image: '/images/1.webp' },
   { id: 2, title: 'شعار', category: 'شركة أثاث ', color: '#ff0080', image: '/images/2.webp' },
@@ -20,20 +20,52 @@ const identityProjects = [
   { id: 12, title: 'شعار', category: 'شركة عقارية', color: '#8a2be2', image: '/images/12.webp' },
 ]
 
+const STEP_DEG = 360 / identityProjects.length
+
+// Cylinder carousel styles: cards sit on a ring that turns backward.
+// Hovering the ring pauses it so a logo can be inspected.
+const ringStyles = `
+  .identity-stage {
+    perspective: 1400px;
+    --ring-radius: 230px;
+  }
+  @media (min-width: 768px) {
+    .identity-stage { --ring-radius: 360px; }
+  }
+  .identity-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    animation: identity-spin 36s linear infinite;
+  }
+  .identity-stage:hover .identity-ring {
+    animation-play-state: paused;
+  }
+  .identity-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+  @keyframes identity-spin {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(-360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .identity-ring { animation: none; }
+  }
+`
+
 export function SpiralGallery() {
   const [hoveredId, setHoveredId] = useState<number | null>(null)
   const [selectedId, setSelectedId] = useState<number | null>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
-
-  // Calculate spiral positions
-  const getSpiralPosition = (index: number, total: number) => {
-    const angle = (index / total) * Math.PI * 4 // 2 full rotations
-    const radius = 150 + index * 25 // Expanding spiral
-    const x = Math.cos(angle) * radius
-    const y = Math.sin(angle) * radius
-    return { x, y, angle }
-  }
 
   // Get adjacent items for expanded view
   const getAdjacentItems = (id: number) => {
@@ -48,14 +80,16 @@ export function SpiralGallery() {
   }
 
   return (
-    <section 
-      id="identities" 
-      className="min-h-screen flex flex-col items-center justify-center py-20 px-4 relative"
+    <section
+      id="identities"
+      className="min-h-screen flex flex-col items-center justify-center py-20 px-4 relative overflow-hidden"
       ref={containerRef}
     >
+      <style>{ringStyles}</style>
+
       {/* Section title */}
       <motion.div
-        className="text-center mb-16"
+        className="text-center mb-12"
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}
@@ -66,147 +100,82 @@ export function SpiralGallery() {
         </h2>
       </motion.div>
 
-      {/* Spiral container */}
-      <div className="relative w-full max-w-4xl aspect-square flex items-center justify-center">
-        {/* Central glow */}
-        <motion.div
-          className="absolute w-32 h-32 rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%)',
-          }}
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.5, 0.8, 0.5],
-          }}
-          transition={{ duration: 3, repeat: Infinity }}
+      {/* Rotating ring of logos */}
+      <motion.div
+        className="identity-stage relative w-full max-w-5xl h-[300px] md:h-[420px] flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1 }}
+      >
+        {/* Soft glow beneath the ring */}
+        <div
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[70%] h-16 rounded-full blur-2xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0, 212, 255, 0.35) 0%, transparent 70%)' }}
         />
 
-        {/* Spiral items */}
-        {identityProjects.map((project, index) => {
-          const { x, y, angle } = getSpiralPosition(index, identityProjects.length)
-          const isHovered = hoveredId === project.id
-          const isAdjacent = hoveredId !== null && Math.abs(identityProjects.findIndex(p => p.id === hoveredId) - index) <= 1
-          
-          return (
-            <motion.div
-              key={project.id}
-              className="absolute cursor-pointer"
-              style={{ 
-                left: '50%', 
-                top: '50%',
-              }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={isInView ? {
-                opacity: 1,
-                scale: isHovered ? 1.8 : isAdjacent && hoveredId !== project.id ? 1.3 : 1,
-                x: x,
-                y: y,
-                zIndex: isHovered ? 50 : isAdjacent ? 40 : 10,
-              } : { opacity: 0, scale: 0 }}
-              transition={{ 
-                duration: 0.5, 
-                delay: index * 0.05,
-                scale: { duration: 0.3 }
-              }}
-              onHoverStart={() => setHoveredId(project.id)}
-              onHoverEnd={() => setHoveredId(null)}
-              onClick={() => setSelectedId(project.id)}
-            >
-              <motion.div
-                className="w-20 h-20 md:w-24 md:h-24 rounded-xl overflow-hidden relative"
+        <div className="identity-ring">
+          {identityProjects.map((project, index) => {
+            const isHovered = hoveredId === project.id
+            return (
+              <div
+                key={project.id}
+                className="identity-card"
                 style={{
-                  background: `linear-gradient(135deg, ${project.color}40 0%, ${project.color}20 100%)`,
-                  border: `2px solid ${project.color}60`,
-                  boxShadow: isHovered 
-                    ? `0 0 40px ${project.color}80, 0 0 80px ${project.color}40`
-                    : `0 0 20px ${project.color}30`,
-                }}
-                animate={{
-                  rotate: isHovered ? 0 : angle * (180 / Math.PI) * 0.1,
+                  transform: `rotateY(${index * STEP_DEG}deg) translateZ(var(--ring-radius))`,
                 }}
               >
-                {/* Project image (if provided) */}
-                {project.image && (
-                  <div className="absolute inset-0">
-                    <Image src={project.image} alt={project.title} fill className="object-cover" />
-                  </div>
-                )}
-
-                {/* Logo/letter overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span 
-                    className="text-2xl md:text-3xl font-bold"
-                    style={{ color: project.color }}
-                  >
-                    {project.title.charAt(0)}
-                  </span>
-                </div>
-                
-                {/* Hover info */}
-                <AnimatePresence>
-                  {isHovered && (
-                    <motion.div
-                      className="absolute inset-0 bg-background/90 backdrop-blur-sm flex flex-col items-center justify-center p-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <p className="text-xs md:text-sm font-semibold text-foreground text-center truncate w-full">
-                        {project.title}
-                      </p>
-                      <p className="text-[10px] md:text-xs text-muted-foreground truncate w-full text-center">
-                        {project.category}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Scan line effect */}
+                <div className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2">
                 <motion.div
-                  className="absolute inset-0 pointer-events-none"
+                  className="relative w-44 h-44 md:w-52 md:h-52 rounded-2xl overflow-hidden cursor-pointer bg-background"
                   style={{
-                    background: `linear-gradient(180deg, transparent 0%, ${project.color}20 50%, transparent 100%)`,
-                    backgroundSize: '100% 10px',
+                    border: `2px solid ${project.color}${isHovered ? 'cc' : '55'}`,
+                    boxShadow: isHovered
+                      ? `0 0 40px ${project.color}90, 0 0 80px ${project.color}40`
+                      : `0 0 24px ${project.color}35`,
                   }}
-                  animate={{
-                    backgroundPosition: ['0% 0%', '0% 100%'],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
-                />
-              </motion.div>
-            </motion.div>
-          )
-        })}
+                  animate={{ scale: isHovered ? 1.12 : 1 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+                  onHoverStart={() => setHoveredId(project.id)}
+                  onHoverEnd={() => setHoveredId(null)}
+                  onClick={() => setSelectedId(project.id)}
+                >
+                  {project.image && (
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      sizes="(min-width: 768px) 208px, 176px"
+                      className="object-contain p-4"
+                    />
+                  )}
 
-        {/* Connection lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
-          {identityProjects.map((_, index) => {
-            if (index === 0) return null
-            const curr = getSpiralPosition(index, identityProjects.length)
-            const prev = getSpiralPosition(index - 1, identityProjects.length)
-            const centerX = 400
-            const centerY = 400
-            return (
-              <motion.line
-                key={index}
-                x1={centerX + prev.x}
-                y1={centerY + prev.y}
-                x2={centerX + curr.x}
-                y2={centerY + curr.y}
-                stroke="rgba(0, 212, 255, 0.1)"
-                strokeWidth="1"
-                initial={{ pathLength: 0 }}
-                animate={isInView ? { pathLength: 1 } : { pathLength: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-              />
+                  <AnimatePresence>
+                    {isHovered && (
+                      <motion.div
+                        className="absolute inset-x-0 bottom-0 bg-background/85 backdrop-blur-sm flex flex-col items-center justify-center py-2 px-2"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 12 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <p className="text-xs md:text-sm font-semibold text-foreground truncate w-full text-center">
+                          {project.title}
+                        </p>
+                        <p className="text-[10px] md:text-xs text-muted-foreground truncate w-full text-center">
+                          {project.category}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+                </div>
+              </div>
             )
           })}
-        </svg>
-      </div>
+        </div>
+      </motion.div>
+
+      <p className="mt-6 text-muted-foreground text-xs tracking-wide">مرّر المؤشر لإيقاف الدوران، وانقر لعرض التفاصيل</p>
 
       {/* Expanded view modal */}
       <AnimatePresence>
@@ -232,7 +201,7 @@ export function SpiralGallery() {
                   style={{
                     background: `linear-gradient(135deg, ${project.color}40 0%, ${project.color}20 100%)`,
                     border: `2px solid ${project.color}60`,
-                    boxShadow: i === 1 
+                    boxShadow: i === 1
                       ? `0 0 60px ${project.color}60`
                       : `0 0 30px ${project.color}30`,
                   }}
@@ -243,10 +212,10 @@ export function SpiralGallery() {
                   <div className="w-full h-full flex flex-col items-center justify-center p-6 relative">
                     {project.image && i === 1 && (
                       <div className="absolute inset-0">
-                        <Image src={project.image} alt={project.title} fill className="object-cover" />
+                        <Image src={project.image} alt={project.title} fill className="object-contain p-6" />
                       </div>
                     )}
-                    <span 
+                    <span
                       className={`font-bold ${i === 1 ? 'text-8xl' : 'text-4xl'}`}
                       style={{ color: project.color }}
                     >
