@@ -27,10 +27,15 @@ const STEP_DEG = 360 / identityProjects.length
 const ringStyles = `
   .identity-stage {
     perspective: 1400px;
-    --ring-radius: 230px;
+    --ring-radius: 150px;
+  }
+  .identity-face {
+    width: 88px;
+    height: 88px;
   }
   @media (min-width: 768px) {
     .identity-stage { --ring-radius: 360px; }
+    .identity-face { width: 208px; height: 208px; }
   }
   .identity-ring {
     position: absolute;
@@ -102,7 +107,7 @@ export function SpiralGallery() {
 
       {/* Rotating ring of logos */}
       <motion.div
-        className="identity-stage relative w-full max-w-5xl h-[300px] md:h-[420px] flex items-center justify-center"
+        className="identity-stage relative w-full max-w-5xl h-[230px] md:h-[420px] flex items-center justify-center"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 1 }}
@@ -126,7 +131,7 @@ export function SpiralGallery() {
               >
                 <div className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2">
                 <motion.div
-                  className="relative w-44 h-44 md:w-52 md:h-52 rounded-2xl overflow-hidden cursor-pointer bg-background"
+                  className="identity-face relative rounded-2xl overflow-hidden cursor-pointer bg-background"
                   style={{
                     border: `2px solid ${project.color}${isHovered ? 'cc' : '55'}`,
                     boxShadow: isHovered
@@ -144,8 +149,8 @@ export function SpiralGallery() {
                       src={project.image}
                       alt={project.title}
                       fill
-                      sizes="(min-width: 768px) 208px, 176px"
-                      className="object-contain p-4"
+                      sizes="(min-width: 768px) 208px, 88px"
+                      className="object-contain p-2 md:p-4"
                     />
                   )}
 
