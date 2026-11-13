@@ -37,7 +37,7 @@ export function HeroSection() {
         <motion.div
           className="absolute w-[600px] h-[600px] rounded-full blur-[120px] opacity-30"
           style={{
-            background: 'radial-gradient(circle, oklch(0.75 0.18 195) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, oklch(0.66 0.2 258) 0%, transparent 70%)',
             top: '10%',
             left: '20%',
           }}
@@ -55,7 +55,7 @@ export function HeroSection() {
         <motion.div
           className="absolute w-[500px] h-[500px] rounded-full blur-[100px] opacity-20"
           style={{
-            background: 'radial-gradient(circle, oklch(0.65 0.25 330) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, oklch(0.94 0.02 255) 0%, transparent 70%)',
             bottom: '20%',
             right: '10%',
           }}
@@ -96,7 +96,7 @@ export function HeroSection() {
             <div 
               className="w-[200px] h-[200px] md:w-[280px] md:h-[280px] rounded-full blur-[60px]"
               style={{
-                background: 'radial-gradient(circle, oklch(0.75 0.18 195 / 0.6) 0%, oklch(0.65 0.25 330 / 0.3) 50%, transparent 70%)',
+                background: 'radial-gradient(circle, oklch(0.66 0.2 258 / 0.6) 0%, oklch(0.94 0.02 255 / 0.3) 50%, transparent 70%)',
               }}
             />
           </motion.div>
@@ -115,9 +115,9 @@ export function HeroSection() {
             <motion.div
               animate={{
                 filter: [
-                  'drop-shadow(0 0 20px oklch(0.75 0.18 195 / 0.8)) drop-shadow(0 0 40px oklch(0.75 0.18 195 / 0.4))',
-                  'drop-shadow(0 0 30px oklch(0.65 0.25 330 / 0.8)) drop-shadow(0 0 60px oklch(0.65 0.25 330 / 0.4))',
-                  'drop-shadow(0 0 20px oklch(0.75 0.18 195 / 0.8)) drop-shadow(0 0 40px oklch(0.75 0.18 195 / 0.4))',
+                  'drop-shadow(0 0 20px oklch(0.66 0.2 258 / 0.8)) drop-shadow(0 0 40px oklch(0.66 0.2 258 / 0.4))',
+                  'drop-shadow(0 0 30px oklch(0.94 0.02 255 / 0.8)) drop-shadow(0 0 60px oklch(0.94 0.02 255 / 0.4))',
+                  'drop-shadow(0 0 20px oklch(0.66 0.2 258 / 0.8)) drop-shadow(0 0 40px oklch(0.66 0.2 258 / 0.4))',
                 ]
               }}
               transition={{
@@ -157,10 +157,10 @@ export function HeroSection() {
                 key={i}
                 className="absolute w-2 h-2 rounded-full"
                 style={{
-                  background: i % 2 === 0 ? 'oklch(0.75 0.18 195)' : 'oklch(0.65 0.25 330)',
+                  background: i % 2 === 0 ? 'oklch(0.66 0.2 258)' : 'oklch(0.94 0.02 255)',
                   boxShadow: i % 2 === 0 
-                    ? '0 0 10px oklch(0.75 0.18 195), 0 0 20px oklch(0.75 0.18 195 / 0.5)'
-                    : '0 0 10px oklch(0.65 0.25 330), 0 0 20px oklch(0.65 0.25 330 / 0.5)',
+                    ? '0 0 10px oklch(0.66 0.2 258), 0 0 20px oklch(0.66 0.2 258 / 0.5)'
+                    : '0 0 10px oklch(0.94 0.02 255), 0 0 20px oklch(0.94 0.02 255 / 0.5)',
                   top: '50%',
                   left: '50%',
                 }}
@@ -199,10 +199,10 @@ export function HeroSection() {
                 style={{
                   color: letter === " " ? "transparent" : "oklch(0.95 0.01 270)",
                   textShadow: letter !== " " ? `
-                    0 0 10px oklch(0.75 0.18 195 / 0.8),
-                    0 0 20px oklch(0.75 0.18 195 / 0.6),
-                    0 0 40px oklch(0.75 0.18 195 / 0.4),
-                    0 0 80px oklch(0.75 0.18 195 / 0.2)
+                    0 0 10px oklch(0.66 0.2 258 / 0.8),
+                    0 0 20px oklch(0.66 0.2 258 / 0.6),
+                    0 0 40px oklch(0.66 0.2 258 / 0.4),
+                    0 0 80px oklch(0.66 0.2 258 / 0.2)
                   ` : "none"
                 }}
                 initial={{ opacity: 0, y: 50, rotateX: -90 }}
@@ -215,9 +215,9 @@ export function HeroSection() {
                 whileHover={{
                   scale: 1.1,
                   textShadow: `
-                    0 0 20px oklch(0.65 0.25 330 / 1),
-                    0 0 40px oklch(0.65 0.25 330 / 0.8),
-                    0 0 60px oklch(0.65 0.25 330 / 0.6)
+                    0 0 20px oklch(0.94 0.02 255 / 1),
+                    0 0 40px oklch(0.94 0.02 255 / 0.8),
+                    0 0 60px oklch(0.94 0.02 255 / 0.6)
                   `,
                   transition: { duration: 0.2 }
                 }}
@@ -240,7 +240,7 @@ export function HeroSection() {
               key={i}
               className="text-xl md:text-2xl lg:text-3xl font-light tracking-[0.2em] uppercase"
               style={{
-                color: i % 2 === 0 ? 'oklch(0.75 0.18 195)' : 'oklch(0.65 0.25 330)'
+                color: i % 2 === 0 ? 'oklch(0.66 0.2 258)' : 'oklch(0.94 0.02 255)'
               }}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -274,7 +274,7 @@ export function HeroSection() {
             <span className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-80 group-hover:opacity-100 transition-opacity" />
             <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
               style={{
-                boxShadow: 'inset 0 0 20px oklch(0.75 0.18 195 / 0.5), 0 0 30px oklch(0.75 0.18 195 / 0.3)'
+                boxShadow: 'inset 0 0 20px oklch(0.66 0.2 258 / 0.5), 0 0 30px oklch(0.66 0.2 258 / 0.3)'
               }}
             />
             <span className="relative z-10 text-primary-foreground font-semibold tracking-wider uppercase text-sm">
@@ -318,8 +318,8 @@ export function HeroSection() {
         className="absolute inset-0 pointer-events-none opacity-[0.02]"
         style={{
           backgroundImage: `
-            linear-gradient(oklch(0.75 0.18 195) 1px, transparent 1px),
-            linear-gradient(90deg, oklch(0.75 0.18 195) 1px, transparent 1px)
+            linear-gradient(oklch(0.66 0.2 258) 1px, transparent 1px),
+            linear-gradient(90deg, oklch(0.66 0.2 258) 1px, transparent 1px)
           `,
           backgroundSize: '50px 50px'
         }}

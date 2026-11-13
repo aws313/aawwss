@@ -8,18 +8,18 @@ import { ExternalLink, Heart, MessageCircle, Share2 } from 'lucide-react'
 import { type Origin, originProps, openProps, measureOrigin, panelWidthFor } from './origin-reveal'
 
 const posts = [
-  { id: 1, title: 'شركة أبواب   ', likes: 2341, comments: 89, color: '#00d4ff', size: 'large', image: '/images/15.webp' },
-  { id: 2, title: 'شركة عقارات  ', likes: 1876, comments: 56, color: '#ff0080', size: 'medium', image: '/images/16.webp' },
-  { id: 3, title: 'شركة طاقة شمسية  ', likes: 3102, comments: 124, color: '#8a2be2', size: 'medium', image: '/images/17.webp' },
-  { id: 4, title: 'شركة مزاد سيارات  ', likes: 4521, comments: 201, color: '#00d4ff', size: 'large', image: '/images/18.webp' },
-  { id: 5, title: '  شركة أبراج', likes: 1543, comments: 67, color: '#ff0080', size: 'small', image: '/images/19.webp' },
-  { id: 6, title: '  منتجات طبية', likes: 2189, comments: 92, color: '#8a2be2', size: 'small', image: '/images/20.webp' },
-  { id: 7, title: 'شركة سفر وسياحة  ', likes: 3678, comments: 156, color: '#00d4ff', size: 'medium', image: '/images/21.webp' },
-  { id: 8, title: '   شركة حلول برمجية', likes: 2901, comments: 111, color: '#ff0080', size: 'large', image: '/images/22.webp' },
-  { id: 9, title: ' شركة امنية', likes: 1987, comments: 78, color: '#8a2be2', size: 'small', image: '/images/23.webp' },
-  { id: 10, title: '   شركة هواتف ', likes: 4102, comments: 189, color: '#00d4ff', size: 'medium', image: '/images/24.webp' },
-  { id: 11, title: ' شركة نقل وسفر', likes: 2567, comments: 98, color: '#ff0080', size: 'small', image: '/images/25.webp' },
-  { id: 12, title: '   شركة توصيل', likes: 5234, comments: 234, color: '#8a2be2', size: 'large', image: '/images/26.webp' },
+  { id: 1, title: 'شركة أبواب   ', likes: 2341, comments: 89, color: '#3b82f6', size: 'large', image: '/images/15.webp' },
+  { id: 2, title: 'شركة عقارات  ', likes: 1876, comments: 56, color: '#e8eefc', size: 'medium', image: '/images/16.webp' },
+  { id: 3, title: 'شركة طاقة شمسية  ', likes: 3102, comments: 124, color: '#1e3a8a', size: 'medium', image: '/images/17.webp' },
+  { id: 4, title: 'شركة مزاد سيارات  ', likes: 4521, comments: 201, color: '#3b82f6', size: 'large', image: '/images/18.webp' },
+  { id: 5, title: '  شركة أبراج', likes: 1543, comments: 67, color: '#e8eefc', size: 'small', image: '/images/19.webp' },
+  { id: 6, title: '  منتجات طبية', likes: 2189, comments: 92, color: '#1e3a8a', size: 'small', image: '/images/20.webp' },
+  { id: 7, title: 'شركة سفر وسياحة  ', likes: 3678, comments: 156, color: '#3b82f6', size: 'medium', image: '/images/21.webp' },
+  { id: 8, title: '   شركة حلول برمجية', likes: 2901, comments: 111, color: '#e8eefc', size: 'large', image: '/images/22.webp' },
+  { id: 9, title: ' شركة امنية', likes: 1987, comments: 78, color: '#1e3a8a', size: 'small', image: '/images/23.webp' },
+  { id: 10, title: '   شركة هواتف ', likes: 4102, comments: 189, color: '#3b82f6', size: 'medium', image: '/images/24.webp' },
+  { id: 11, title: ' شركة نقل وسفر', likes: 2567, comments: 98, color: '#e8eefc', size: 'small', image: '/images/25.webp' },
+  { id: 12, title: '   شركة توصيل', likes: 5234, comments: 234, color: '#1e3a8a', size: 'large', image: '/images/26.webp' },
 ]
 
 export function PostsGrid() {

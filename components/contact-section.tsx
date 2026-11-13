@@ -25,7 +25,7 @@ export function ContactSection() {
         <div 
           className="absolute w-[800px] h-[800px] rounded-full blur-[150px] opacity-20"
           style={{
-            background: 'radial-gradient(circle, oklch(0.75 0.18 195) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, oklch(0.66 0.2 258) 0%, transparent 70%)',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -69,7 +69,7 @@ export function ContactSection() {
                 <motion.a
                   href="mailto:aws44144@gmail.com"
                   className="flex items-center gap-4 p-4 rounded-xl glass-card group"
-                  whileHover={{ x: 10, boxShadow: '0 0 30px oklch(0.75 0.18 195 / 0.2)' }}
+                  whileHover={{ x: 10, boxShadow: '0 0 30px oklch(0.66 0.2 258 / 0.2)' }}
                 >
                   <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-primary/20">
                     <Mail className="w-5 h-5 text-primary" />
@@ -99,7 +99,7 @@ export function ContactSection() {
               <motion.a
                 href="tel:+9647715684737"
                 className="flex items-center gap-4 p-4 rounded-xl glass-card group"
-                whileHover={{ x: 10, boxShadow: '0 0 30px oklch(0.75 0.18 195 / 0.2)' }}
+                whileHover={{ x: 10, boxShadow: '0 0 30px oklch(0.66 0.2 258 / 0.2)' }}
               >
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-primary/20">
                   <Phone className="w-5 h-5 text-primary" />
@@ -117,7 +117,7 @@ export function ContactSection() {
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-4 p-4 rounded-xl glass-card group"
-                whileHover={{ x: 10, boxShadow: '0 0 30px oklch(0.75 0.18 195 / 0.2)' }}
+                whileHover={{ x: 10, boxShadow: '0 0 30px oklch(0.66 0.2 258 / 0.2)' }}
               >
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-primary/20">
                   <Instagram className="w-5 h-5 text-primary" />
@@ -189,7 +189,7 @@ export function ContactSection() {
                 <motion.span
                   className="absolute inset-0"
                   style={{
-                    background: 'linear-gradient(135deg, oklch(0.75 0.18 195) 0%, oklch(0.65 0.25 330) 100%)'
+                    background: 'linear-gradient(135deg, oklch(0.66 0.2 258) 0%, oklch(0.94 0.02 255) 100%)'
                   }}
                   animate={{
                     opacity: isHovered ? 1 : 0.9
@@ -201,8 +201,8 @@ export function ContactSection() {
                   className="absolute inset-0"
                   animate={{
                     boxShadow: isHovered 
-                      ? '0 0 40px oklch(0.75 0.18 195 / 0.6), 0 0 80px oklch(0.65 0.25 330 / 0.4), inset 0 0 40px oklch(0.75 0.18 195 / 0.2)'
-                      : '0 0 20px oklch(0.75 0.18 195 / 0.3)'
+                      ? '0 0 40px oklch(0.66 0.2 258 / 0.6), 0 0 80px oklch(0.94 0.02 255 / 0.4), inset 0 0 40px oklch(0.66 0.2 258 / 0.2)'
+                      : '0 0 20px oklch(0.66 0.2 258 / 0.3)'
                   }}
                   transition={{ duration: 0.3 }}
                 />

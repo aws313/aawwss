@@ -5,34 +5,34 @@
 
 :root {
   /* Deep space dark theme */
-  --background: oklch(0.08 0.02 270);
-  --foreground: oklch(0.95 0.01 270);
-  --card: oklch(0.12 0.02 270);
+  --background: oklch(0.12 0.03 265);
+  --foreground: oklch(0.96 0.005 250);
+  --card: oklch(0.16 0.035 265);
   --card-foreground: oklch(0.95 0.01 270);
-  --popover: oklch(0.1 0.02 270);
+  --popover: oklch(0.15 0.035 265);
   --popover-foreground: oklch(0.95 0.01 270);
   
   /* Neon cyan primary */
-  --primary: oklch(0.75 0.18 195);
-  --primary-foreground: oklch(0.1 0.02 195);
+  --primary: oklch(0.66 0.2 258);
+  --primary-foreground: oklch(0.12 0.03 265);
   
   /* Deep purple secondary */
   --secondary: oklch(0.15 0.03 280);
   --secondary-foreground: oklch(0.9 0.02 280);
   
-  --muted: oklch(0.2 0.02 270);
-  --muted-foreground: oklch(0.6 0.02 270);
+  --muted: oklch(0.2 0.03 265);
+  --muted-foreground: oklch(0.7 0.03 255);
   
   /* Magenta accent */
-  --accent: oklch(0.65 0.25 330);
-  --accent-foreground: oklch(0.1 0.02 330);
+  --accent: oklch(0.66 0.2 258);
+  --accent-foreground: oklch(0.12 0.03 265);
   
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.95 0.01 25);
   
-  --border: oklch(0.25 0.03 270);
+  --border: oklch(0.3 0.04 262);
   --input: oklch(0.18 0.02 270);
-  --ring: oklch(0.75 0.18 195);
+  --ring: oklch(0.66 0.2 258);
   
   /* Neon chart colors */
   --chart-1: oklch(0.75 0.18 195); /* Cyan */
@@ -51,25 +51,25 @@
 }
 
 .dark {
-  --background: oklch(0.08 0.02 270);
-  --foreground: oklch(0.95 0.01 270);
-  --card: oklch(0.12 0.02 270);
+  --background: oklch(0.12 0.03 265);
+  --foreground: oklch(0.96 0.005 250);
+  --card: oklch(0.16 0.035 265);
   --card-foreground: oklch(0.95 0.01 270);
-  --popover: oklch(0.1 0.02 270);
+  --popover: oklch(0.15 0.035 265);
   --popover-foreground: oklch(0.95 0.01 270);
-  --primary: oklch(0.75 0.18 195);
-  --primary-foreground: oklch(0.1 0.02 195);
+  --primary: oklch(0.66 0.2 258);
+  --primary-foreground: oklch(0.12 0.03 265);
   --secondary: oklch(0.15 0.03 280);
   --secondary-foreground: oklch(0.9 0.02 280);
-  --muted: oklch(0.2 0.02 270);
-  --muted-foreground: oklch(0.6 0.02 270);
-  --accent: oklch(0.65 0.25 330);
-  --accent-foreground: oklch(0.1 0.02 330);
+  --muted: oklch(0.2 0.03 265);
+  --muted-foreground: oklch(0.7 0.03 255);
+  --accent: oklch(0.66 0.2 258);
+  --accent-foreground: oklch(0.12 0.03 265);
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.95 0.01 25);
-  --border: oklch(0.25 0.03 270);
+  --border: oklch(0.3 0.04 262);
   --input: oklch(0.18 0.02 270);
-  --ring: oklch(0.75 0.18 195);
+  --ring: oklch(0.66 0.2 258);
   --chart-1: oklch(0.75 0.18 195);
   --chart-2: oklch(0.65 0.25 330);
   --chart-3: oklch(0.7 0.2 145);
@@ -141,29 +141,13 @@
 }
 
 /* Neon glow utilities */
-.glow-cyan {
-  box-shadow: 0 0 20px oklch(0.75 0.18 195 / 0.5),
-              0 0 40px oklch(0.75 0.18 195 / 0.3),
-              0 0 60px oklch(0.75 0.18 195 / 0.1);
-}
+.glow-cyan { box-shadow: none; }
 
-.glow-magenta {
-  box-shadow: 0 0 20px oklch(0.65 0.25 330 / 0.5),
-              0 0 40px oklch(0.65 0.25 330 / 0.3),
-              0 0 60px oklch(0.65 0.25 330 / 0.1);
-}
+.glow-magenta { box-shadow: none; }
 
-.text-glow-cyan {
-  text-shadow: 0 0 10px oklch(0.75 0.18 195 / 0.8),
-               0 0 20px oklch(0.75 0.18 195 / 0.5),
-               0 0 40px oklch(0.75 0.18 195 / 0.3);
-}
+.text-glow-cyan { text-shadow: none; }
 
-.text-glow-magenta {
-  text-shadow: 0 0 10px oklch(0.65 0.25 330 / 0.8),
-               0 0 20px oklch(0.65 0.25 330 / 0.5),
-               0 0 40px oklch(0.65 0.25 330 / 0.3);
-}
+.text-glow-magenta { text-shadow: none; }
 
 /* Floating animation */
 @keyframes float {
@@ -272,16 +256,7 @@ section {
   }
 }
 
-@keyframes glowPulse {
-  0%, 100% {
-    box-shadow: 0 0 20px oklch(0.75 0.18 195 / 0.4),
-                0 0 40px oklch(0.75 0.18 195 / 0.2);
-  }
-  50% {
-    box-shadow: 0 0 40px oklch(0.75 0.18 195 / 0.6),
-                0 0 80px oklch(0.75 0.18 195 / 0.3);
-  }
-}
+@keyframes glowPulse { 0%, 100% { box-shadow: none; } }
 
 .animate-slide-up {
   animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -302,3 +277,7 @@ section {
 .animate-glow-pulse {
   animation: glowPulse 2s ease-in-out infinite;
 }
+
+/* Quiet luxury: hairline rules and generous, unhurried type */
+h1, h2, h3 { letter-spacing: -0.01em; font-weight: 500; }
+::selection { background: oklch(0.66 0.2 258 / 0.35); }

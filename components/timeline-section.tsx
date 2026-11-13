@@ -11,7 +11,7 @@ const experiences = [
     company: "Neon Studios",
     description: "قيادة فريق مكوّن من 12 مصممًا لإنشاء تجارب علامة تجارية غامرة لعملاء من فورتشن 500.",
     icon: Rocket,
-    color: "oklch(0.75 0.18 195)"
+    color: "oklch(0.66 0.2 258)"
   },
   {
     year: "2022",
@@ -19,7 +19,7 @@ const experiences = [
     company: "Digital Frontier",
     description: "صممت حملات حائزة على جوائز حققت أكثر من 50 مليون ظهور عبر المنصات الرقمية.",
     icon: Award,
-    color: "oklch(0.65 0.25 330)"
+    color: "oklch(0.94 0.02 255)"
   },
   {
     year: "2020",
@@ -27,7 +27,7 @@ const experiences = [
     company: "Pixel Perfect Agency",
     description: "ابتكرت هويات بصرية لأكثر من 30 شركة ناشئة، مع التركيز على الجمالية البسيطة والمستقبلية.",
     icon: Briefcase,
-    color: "oklch(0.7 0.2 145)"
+    color: "oklch(0.6 0.15 258)"
   },
   {
     year: "2018",
@@ -35,7 +35,7 @@ const experiences = [
     company: "School of Visual Arts",
     description: "تخرجت مع مرتبة الشرف في التصميم الغرافيكي مع تركيز على الوسائط التفاعلية والموشن جرافيك.",
     icon: GraduationCap,
-    color: "oklch(0.6 0.2 280)"
+    color: "oklch(0.5 0.15 258)"
   }
 ]
 

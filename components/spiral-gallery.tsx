@@ -7,18 +7,18 @@ import { motion, useInView, AnimatePresence, useAnimation } from 'framer-motion'
 
 // Visual identity projects
 const identityProjects = [
-  { id: 1, title: 'شعار', category: 'صيدلية  ', color: '#00d4ff', image: '/images/1.webp' },
-  { id: 2, title: 'شعار', category: 'شركة أثاث ', color: '#ff0080', image: '/images/2.webp' },
-  { id: 3, title: 'شعار', category: 'طب وعناية', color: '#8a2be2', image: '/images/3.webp' },
-  { id: 4, title: 'شعار', category: 'شركة مظلات ', color: '#00d4ff', image: '/images/4.webp' },
-  { id: 5, title: 'شعار', category: ' شركة حقائب', color: '#ff0080', image: '/images/5.webp' },
-  { id: 6, title: 'شعار', category: 'سفر وسياحة ', color: '#8a2be2', image: '/images/6.webp' },
-  { id: 7, title: 'شعار', category: 'شركة صوتيات ', color: '#00d4ff', image: '/images/7.webp' },
-  { id: 8, title: 'شعار', category: 'الطاقة المتجددة', color: '#ff0080', image: '/images/8.webp' },
-  { id: 9, title: 'شعار', category: 'شركة أبراج', color: '#8a2be2', image: '/images/9.webp' },
-  { id: 10, title: 'شعار', category: 'أدوات احتياطية', color: '#00d4ff', image: '/images/10.webp' },
-  { id: 11, title: 'شعار ', category: 'شركة تعليمية', color: '#ff0080', image: '/images/11.webp' },
-  { id: 12, title: 'شعار', category: 'شركة عقارية', color: '#8a2be2', image: '/images/12.webp' },
+  { id: 1, title: 'شعار', category: 'صيدلية  ', color: '#3b82f6', image: '/images/1.webp' },
+  { id: 2, title: 'شعار', category: 'شركة أثاث ', color: '#e8eefc', image: '/images/2.webp' },
+  { id: 3, title: 'شعار', category: 'طب وعناية', color: '#1e3a8a', image: '/images/3.webp' },
+  { id: 4, title: 'شعار', category: 'شركة مظلات ', color: '#3b82f6', image: '/images/4.webp' },
+  { id: 5, title: 'شعار', category: ' شركة حقائب', color: '#e8eefc', image: '/images/5.webp' },
+  { id: 6, title: 'شعار', category: 'سفر وسياحة ', color: '#1e3a8a', image: '/images/6.webp' },
+  { id: 7, title: 'شعار', category: 'شركة صوتيات ', color: '#3b82f6', image: '/images/7.webp' },
+  { id: 8, title: 'شعار', category: 'الطاقة المتجددة', color: '#e8eefc', image: '/images/8.webp' },
+  { id: 9, title: 'شعار', category: 'شركة أبراج', color: '#1e3a8a', image: '/images/9.webp' },
+  { id: 10, title: 'شعار', category: 'أدوات احتياطية', color: '#3b82f6', image: '/images/10.webp' },
+  { id: 11, title: 'شعار ', category: 'شركة تعليمية', color: '#e8eefc', image: '/images/11.webp' },
+  { id: 12, title: 'شعار', category: 'شركة عقارية', color: '#1e3a8a', image: '/images/12.webp' },
 ]
 
 const STEP_DEG = 360 / identityProjects.length

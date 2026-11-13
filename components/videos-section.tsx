@@ -13,7 +13,7 @@ const videos = [
     duration: '2:34', 
     views: '12.4K',
     category: 'فديو اعلان ',
-    color: '#00d4ff',
+    color: '#3b82f6',
   featured: true,
   src: '/video/1.mp4',
   poster: '/video/1.jpg'
@@ -24,7 +24,7 @@ const videos = [
     duration: '1:45', 
     views: '8.7K',
     category: 'فديو موشن',
-    color: '#ff0080',
+    color: '#e8eefc',
   featured: false,
   src: '/video/2.mp4',
   poster: '/video/2.jpg'
@@ -35,7 +35,7 @@ const videos = [
     duration: '3:12', 
     views: '15.2K',
     category: 'فديو اعلان مع موشن',
-    color: '#8a2be2',
+    color: '#1e3a8a',
   featured: false,
   src: '/video/3.mp4',
   poster: '/video/3.jpg'
@@ -46,7 +46,7 @@ const videos = [
     duration: '2:08', 
     views: '9.3K',
     category: '3D Design',
-    color: '#00d4ff',
+    color: '#3b82f6',
     featured: false 
   },
   { 
@@ -55,7 +55,7 @@ const videos = [
     duration: '1:56', 
     views: '11.1K',
     category: 'Typography',
-    color: '#ff0080',
+    color: '#e8eefc',
     featured: false 
   },
   { 
@@ -64,7 +64,7 @@ const videos = [
     duration: '4:21', 
     views: '18.9K',
     category: 'Experimental',
-    color: '#8a2be2',
+    color: '#1e3a8a',
     featured: false 
   },
 ]
@@ -142,7 +142,7 @@ export function VideosSection() {
 
   const rightSlots = Array.from({ length: 10 }).map((_, i) => {
     const num = 4 + i // 4..13
-    const colorCycle = ['#ff0080', '#8a2be2', '#00d4ff']
+    const colorCycle = ['#e8eefc', '#1e3a8a', '#3b82f6']
     return {
       id: num,
       title: rightTitles[num] ?? `فيديو ${num}`,

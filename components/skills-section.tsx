@@ -14,12 +14,12 @@ import {
 } from 'lucide-react'
 
 const skills = [
-  { name: "هويات بصرية", level: 95, icon: Palette, color: "oklch(0.75 0.18 195)" },
-  { name: "تصميم واجهات وتجربة المستخدم", level: 90, icon: Layers, color: "oklch(0.65 0.25 330)" },
-  { name: "تصميم الحركة", level: 88, icon: MonitorPlay, color: "oklch(0.7 0.2 145)" },
-  { name: "ثلاثي الأبعاد وWebGL", level: 82, icon: Sparkles, color: "oklch(0.6 0.2 280)" },
-  { name: "تطوير الواجهة الأمامية", level: 75, icon: Code2, color: "oklch(0.75 0.2 85)" },
-  { name: "التصوير", level: 85, icon: Camera, color: "oklch(0.75 0.18 195)" },
+  { name: "هويات بصرية", level: 95, icon: Palette, color: "oklch(0.66 0.2 258)" },
+  { name: "تصميم واجهات وتجربة المستخدم", level: 90, icon: Layers, color: "oklch(0.94 0.02 255)" },
+  { name: "تصميم الحركة", level: 88, icon: MonitorPlay, color: "oklch(0.6 0.15 258)" },
+  { name: "ثلاثي الأبعاد وWebGL", level: 82, icon: Sparkles, color: "oklch(0.5 0.15 258)" },
+  { name: "تطوير الواجهة الأمامية", level: 75, icon: Code2, color: "oklch(0.66 0.2 258)" },
+  { name: "التصوير", level: 85, icon: Camera, color: "oklch(0.66 0.2 258)" },
 ]
 
 const tools = [
@@ -95,11 +95,11 @@ function RadialChart() {
   const isInView = useInView(ref, { once: true, margin: "-50px" })
   
   const data = [
-    { label: "الإبداع", value: 95, color: "oklch(0.75 0.18 195)" },
-    { label: "تقني", value: 85, color: "oklch(0.65 0.25 330)" },
-    { label: "التواصل", value: 90, color: "oklch(0.7 0.2 145)" },
-    { label: "حل المشكلات", value: 88, color: "oklch(0.6 0.2 280)" },
-    { label: "القيادة", value: 82, color: "oklch(0.75 0.2 85)" },
+    { label: "الإبداع", value: 95, color: "oklch(0.66 0.2 258)" },
+    { label: "تقني", value: 85, color: "oklch(0.94 0.02 255)" },
+    { label: "التواصل", value: 90, color: "oklch(0.6 0.15 258)" },
+    { label: "حل المشكلات", value: 88, color: "oklch(0.5 0.15 258)" },
+    { label: "القيادة", value: 82, color: "oklch(0.66 0.2 258)" },
   ]
 
   const centerX = 150
@@ -130,8 +130,8 @@ function RadialChart() {
             const radius = (d.value / 100) * maxRadius
             return `${centerX + Math.cos(angle) * radius},${centerY + Math.sin(angle) * radius}`
           }).join(' ')}
-          fill="oklch(0.75 0.18 195 / 0.2)"
-          stroke="oklch(0.75 0.18 195)"
+          fill="oklch(0.66 0.2 258 / 0.2)"
+          stroke="oklch(0.66 0.2 258)"
           strokeWidth="2"
           initial={{ opacity: 0, scale: 0 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -251,7 +251,7 @@ export function SkillsSection() {
                       transition={{ delay: 0.6 + i * 0.1 }}
                       whileHover={{ 
                         scale: 1.05,
-                        boxShadow: '0 0 20px oklch(0.75 0.18 195 / 0.3)'
+                        boxShadow: '0 0 20px oklch(0.66 0.2 258 / 0.3)'
                       }}
                     >
                       <Icon className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />

@@ -102,8 +102,8 @@ export function Navigation() {
               href="#contact"
               className="hidden md:flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium relative overflow-hidden group"
               style={{
-                background: 'linear-gradient(135deg, oklch(0.75 0.18 195 / 0.2) 0%, oklch(0.65 0.25 330 / 0.2) 100%)',
-                border: '1px solid oklch(0.75 0.18 195 / 0.3)'
+                background: 'linear-gradient(135deg, oklch(0.66 0.2 258 / 0.2) 0%, oklch(0.94 0.02 255 / 0.2) 100%)',
+                border: '1px solid oklch(0.66 0.2 258 / 0.3)'
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

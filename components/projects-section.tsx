@@ -11,7 +11,7 @@ const projects = [
     category: "شعارات الشركات  ",
     description: "نظام هوية مستقبلية لشركة حوسبة كمومية، يتضمن عناصر هولوجرافية وحركة ديناميكية.",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    color: "oklch(0.75 0.18 195)",
+    color: "oklch(0.66 0.2 258)",
     tags: ["Branding", "Motion", "3D"],
     stats: { views: "24K", likes: "1.2K" }
   },
@@ -21,7 +21,7 @@ const projects = [
     category: "فن رقمي",
     description: "مجموعة فنية مولّدة بالذكاء الاصطناعي تستكشف حدود الإبداع البشري وتعلم الآلة.",
     image: "https://images.unsplash.com/photo-1634017839464-5c339bbe3c35?w=800&h=600&fit=crop",
-    color: "oklch(0.65 0.25 330)",
+    color: "oklch(0.94 0.02 255)",
     tags: ["AI Art", "Generative", "NFT"],
     stats: { views: "56K", likes: "3.8K" }
   },
@@ -31,7 +31,7 @@ const projects = [
     category: "تصميم واجهات وتجربة المستخدم",
     description: "تجربة ويب غامرة لمدينة واقع افتراضي، مع تفاعلات ثلاثية الأبعاد في الوقت الفعلي.",
     image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&h=600&fit=crop",
-    color: "oklch(0.7 0.2 145)",
+    color: "oklch(0.6 0.15 258)",
     tags: ["WebGL", "Interactive", "VR"],
     stats: { views: "18K", likes: "980" }
   },
@@ -41,7 +41,7 @@ const projects = [
     category: "تصميم حركة",
     description: "هوية بصرية حركية لمنصة تكنولوجيا صحية، تتميز برسوم متحركة مستلهمة من القياسات الحيوية.",
     image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop",
-    color: "oklch(0.6 0.2 280)",
+    color: "oklch(0.5 0.15 258)",
     tags: ["Motion", "Healthcare", "Animation"],
     stats: { views: "31K", likes: "2.1K" }
   },
@@ -51,7 +51,7 @@ const projects = [
     category: "رسوم توضيحية",
     description: "سلسلة رسوم كونية تصور الرحلة الإنسانية عبر الفضاء والوعي.",
     image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&h=600&fit=crop",
-    color: "oklch(0.75 0.2 85)",
+    color: "oklch(0.66 0.2 258)",
     tags: ["Illustration", "Space", "Digital"],
     stats: { views: "42K", likes: "2.9K" }
   },
@@ -61,7 +61,7 @@ const projects = [
     category: "حملة",
     description: "حملة إعلانية متعددة المنصات لعلامة مركبات كهربائية، بطابع سايبربنك.",
     image: "https://images.unsplash.com/photo-1617802690992-15d93263d3a9?w=800&h=600&fit=crop",
-    color: "oklch(0.75 0.18 195)",
+    color: "oklch(0.66 0.2 258)",
     tags: ["Advertising", "EV", "Campaign"],
     stats: { views: "67K", likes: "4.5K" }
   }
