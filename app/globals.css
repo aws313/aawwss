@@ -318,3 +318,47 @@ h1, h2, h3 { letter-spacing: -0.01em; font-weight: 500; }
 @media (prefers-reduced-motion: reduce) {
   .dtf-float { animation: none; }
 }
+
+/* Print section: nine pieces on a rotating 3D disc */
+.print-stage { perspective: 1400px; --print-radius: 230px; }
+.print-face { width: 150px; height: 200px; }
+@media (min-width: 768px) {
+  .print-stage { --print-radius: 440px; }
+  .print-face { width: 280px; height: 373px; }
+}
+.print-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  animation: print-spin 42s linear infinite;
+}
+.print-stage:hover .print-ring { animation-play-state: paused; }
+.print-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.print-glow {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 56px;
+  border-radius: 9999px;
+  filter: blur(24px);
+  background: radial-gradient(circle, oklch(0.66 0.2 258 / 0.45) 0%, transparent 70%);
+  pointer-events: none;
+}
+@keyframes print-spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .print-ring { animation: none; }
+}

@@ -55,23 +55,37 @@ export function PrintSection() {
         </h2>
       </motion.div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-        {prints.map((item, i) => (
-          <motion.button
-            key={item.src}
-            type="button"
-            aria-label={item.alt}
-            onClick={() => setOpenIndex(i)}
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.05 * i }}
-            whileHover={{ y: -4 }}
-            className="relative aspect-[3/4] rounded-xl md:rounded-2xl overflow-hidden border border-primary/25 bg-card cursor-pointer"
-          >
-            <Image src={item.src} alt={item.alt} fill sizes="(min-width: 1024px) 380px, 50vw" className="object-cover" />
-          </motion.button>
-        ))}
-      </div>
+      {/* Rotating disc of the nine pieces. Hovering pauses it; tapping a piece opens it. */}
+      <motion.div
+        className="print-stage relative w-full max-w-5xl mx-auto h-[330px] md:h-[600px] flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <div className="print-glow" />
+        <div className="print-ring">
+          {prints.map((item, i) => (
+            <div
+              key={item.src}
+              className="print-card"
+              style={{ transform: `rotateY(${i * (360 / prints.length)}deg) translateZ(var(--print-radius))` }}
+            >
+              <div className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2">
+                <button
+                  type="button"
+                  aria-label={item.alt}
+                  onClick={() => setOpenIndex(i)}
+                  className="print-face relative overflow-hidden rounded-xl md:rounded-2xl border border-primary/30 bg-card cursor-pointer"
+                >
+                  <Image src={item.src} alt={item.alt} fill sizes="(min-width: 768px) 280px, 150px" className="object-cover" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      <p className="mt-6 text-center text-muted-foreground text-xs tracking-wide">مرّر المؤشر لإيقاف الدوران، وانقر لعرض التفاصيل</p>
 
       {/* Viewer: rendered in a portal so page transforms cannot shift the fixed overlay */}
       {mounted && createPortal(
