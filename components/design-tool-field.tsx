@@ -1,9 +1,10 @@
 "use client"
 
+import { useEffect, useRef } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import { PenTool, Brush, Crop, Layers, Ruler, Pipette, Type, Move, Palette, Scissors, Blend, Eraser, Spline, Pencil, Square, Circle, Grid2x2, Magnet } from 'lucide-react'
 
-// Small, glowing design-tool icons that drift slowly behind the page.
+// Small, glowing design-tool icons that drift slowly behind the page and react to the cursor.
 // Each entry: icon, position (% of the viewport), size in px, drift speed in seconds, start delay.
 const field: { icon: LucideIcon; x: number; y: number; size: number; dur: number; delay: number; mobileHidden?: boolean }[] = [
   { icon: PenTool, x: 6, y: 12, size: 22, dur: 26, delay: 0 },
@@ -26,7 +27,60 @@ const field: { icon: LucideIcon; x: number; y: number; size: number; dur: number
   { icon: Magnet, x: 84, y: 68, size: 18, dur: 31, delay: -15, mobileHidden: true },
 ]
 
+const REACH = 180   // px: distance at which the cursor starts to affect an icon
+const PUSH = 46     // px: maximum push away from the cursor
+
 export function DesignToolField() {
+  const holders = useRef<(HTMLSpanElement | null)[]>([])
+
+  useEffect(() => {
+    // Skip the cursor reaction on touch-only devices and for reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!window.matchMedia('(hover: hover)').matches) return
+
+    let frame = 0
+    let mx = -9999
+    let my = -9999
+
+    const update = () => {
+      frame = 0
+      holders.current.forEach((el) => {
+        if (!el) return
+        const r = el.getBoundingClientRect()
+        const cx = r.left + r.width / 2
+        const cy = r.top + r.height / 2
+        const dx = cx - mx
+        const dy = cy - my
+        const d = Math.hypot(dx, dy)
+        const s = d < REACH ? 1 - d / REACH : 0           // 0 far away, 1 right under the cursor
+        const push = s * PUSH
+        const ux = d > 0 ? dx / d : 0
+        const uy = d > 0 ? dy / d : 0
+        el.style.transform = `translate3d(${(ux * push).toFixed(1)}px, ${(uy * push).toFixed(1)}px, 0) scale(${(1 + s * 0.35).toFixed(3)})`
+        el.style.setProperty('--glow', s.toFixed(3))
+      })
+    }
+
+    const onMove = (e: PointerEvent) => {
+      mx = e.clientX
+      my = e.clientY
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    const onLeave = () => {
+      mx = -9999
+      my = -9999
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true })
+    document.addEventListener('pointerleave', onLeave)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      document.removeEventListener('pointerleave', onLeave)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [])
+
   return (
     <div aria-hidden="true" className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       {field.map((item, i) => {
@@ -34,15 +88,16 @@ export function DesignToolField() {
         return (
           <span
             key={i}
-            className={`dtf-float absolute ${item.mobileHidden ? 'hidden md:block' : ''}`}
-            style={{
-              left: `${item.x}%`,
-              top: `${item.y}%`,
-              animationDuration: `${item.dur}s`,
-              animationDelay: `${item.delay}s`,
-            }}
+            ref={(el) => { holders.current[i] = el }}
+            className={`dtf-holder absolute ${item.mobileHidden ? 'hidden md:block' : ''}`}
+            style={{ left: `${item.x}%`, top: `${item.y}%` }}
           >
-            <Icon size={item.size} strokeWidth={1.25} />
+            <span
+              className="dtf-float block"
+              style={{ animationDuration: `${item.dur}s`, animationDelay: `${item.delay}s` }}
+            >
+              <Icon size={item.size} strokeWidth={1.25} />
+            </span>
           </span>
         )
       })}
