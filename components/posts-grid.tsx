@@ -22,8 +22,9 @@ const posts = [
   { id: 12, title: '   شركة توصيل', likes: 5234, comments: 234, color: '#1e3a8a', size: 'large', image: '/images/26.webp' },
 ]
 
+const postBands = [0, 4, 8].map((from) => posts.slice(from, from + 4))
+
 export function PostsGrid() {
-  const [hoveredId, setHoveredId] = useState<number | null>(null)
   const [selectedPost, setSelectedPost] = useState<typeof posts[0] | null>(null)
   const [origin, setOrigin] = useState<Origin | null>(null)
   const cardControls = useAnimation()
@@ -73,19 +74,6 @@ export function PostsGrid() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPost])
 
-  // Generate random floating positions
-  const getFloatingStyle = (index: number, size: string) => {
-    const baseSize = size === 'large' ? 280 : size === 'medium' ? 220 : 160
-    const randomX = Math.sin(index * 1.5) * 20
-    const randomY = Math.cos(index * 1.2) * 15
-    return {
-      width: baseSize,
-      height: baseSize,
-      x: randomX,
-      y: randomY,
-    }
-  }
-
   return (
     <section 
       ref={containerRef}
@@ -105,143 +93,30 @@ export function PostsGrid() {
         </h2>
       </motion.div>
 
-      {/* Floating grid */}
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {posts.map((post, index) => {
-            const floatStyle = getFloatingStyle(index, post.size)
-            const isHovered = hoveredId === post.id
-
-            return (
-              <motion.div
-                key={post.id}
-                className={`relative cursor-pointer ${
-                  post.size === 'large' ? 'col-span-2 row-span-2' : 
-                  post.size === 'medium' ? 'col-span-1 row-span-2 md:col-span-1' : 
-                  'col-span-1 row-span-1'
-                }`}
-                initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? { 
-                  opacity: 1, 
-                  y: 0,
-                  x: isHovered ? 0 : floatStyle.x,
-                } : { opacity: 0, y: 50 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: index * 0.05,
-                  x: { duration: 3, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }
-                }}
-                onHoverStart={() => setHoveredId(post.id)}
-                onHoverEnd={() => setHoveredId(null)}
-                onClick={(e) => openFrom(post, e.currentTarget as HTMLElement)}
-              >
-                <motion.div
-                  className="w-full h-full min-h-[200px] md:min-h-[250px] rounded-2xl overflow-hidden relative"
-                  style={{
-                    background: `linear-gradient(135deg, ${post.color}30 0%, ${post.color}10 100%)`,
-                    border: `1px solid ${post.color}40`,
-                  }}
-                  animate={{
-                    boxShadow: isHovered 
-                      ? `0 0 40px ${post.color}50, 0 0 80px ${post.color}30, inset 0 0 30px ${post.color}20`
-                      : `0 0 20px ${post.color}20`,
-                    scale: isHovered ? 1.02 : 1,
-                  }}
-                  transition={{ duration: 0.3 }}
+      {/* Horizontal bands: each group is a strip that drifts sideways, alternating direction.
+          Hovering a band pauses it; tapping a card opens it in place. */}
+      <div className="space-y-6 md:space-y-8">
+        {postBands.map((band, bi) => (
+          <div key={bi} className="posts-band overflow-hidden">
+            <div className={`posts-track flex gap-4 md:gap-6 pe-4 md:pe-6 w-max ${bi % 2 === 0 ? 'posts-track-left' : 'posts-track-right'}`}>
+              {[...band, ...band].map((post, i) => (
+                <button
+                  key={`${post.id}-${i}`}
+                  type="button"
+                  aria-label={post.title}
+                  onClick={(e) => openFrom(post, e.currentTarget as HTMLElement)}
+                  className="relative shrink-0 w-56 md:w-72 aspect-[4/5] rounded-2xl overflow-hidden border text-start"
+                  style={{ borderColor: `${post.color}40` }}
                 >
-                  {/* Image */}
-                  {post.image && (
-                    <div className="absolute inset-0">
-                      <Image src={post.image} alt={post.title} fill className="object-cover" />
-                    </div>
-                  )}
-
-                  {/* Grid pattern overlay */}
-                  <div 
-                    className="absolute inset-0 opacity-10"
-                    style={{
-                      backgroundImage: `
-                        linear-gradient(${post.color}40 1px, transparent 1px),
-                        linear-gradient(90deg, ${post.color}40 1px, transparent 1px)
-                      `,
-                      backgroundSize: '20px 20px'
-                    }}
-                  />
-
-                  {/* Hover overlay */}
-                  <AnimatePresence>
-                    {isHovered && (
-                      <motion.div
-                        className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center p-4"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        <motion.p
-                          className="text-foreground font-semibold text-center text-sm md:text-base mb-4"
-                          initial={{ y: 10 }}
-                          animate={{ y: 0 }}
-                        >
-                          {post.title}
-                        </motion.p>
-                        <div className="flex gap-4 text-muted-foreground text-xs md:text-sm">
-                          <span className="flex items-center gap-1">
-                            <Heart className="w-4 h-4" style={{ color: post.color }} />
-                            {post.likes.toLocaleString()}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <MessageCircle className="w-4 h-4" style={{ color: post.color }} />
-                            {post.comments}
-                          </span>
-                        </div>
-                        <motion.div
-                          className="mt-4 px-4 py-2 rounded-full text-xs font-medium flex items-center gap-2"
-                          style={{
-                            background: `${post.color}20`,
-                            border: `1px solid ${post.color}40`,
-                            color: post.color,
-                          }}
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          <ExternalLink className="w-3 h-3" />
-                          عرض المشروع
-                        </motion.div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Floating particles */}
-                  {isHovered && (
-                    <>
-                      {[...Array(5)].map((_, i) => (
-                        <motion.div
-                          key={i}
-                          className="absolute w-2 h-2 rounded-full"
-                          style={{ background: post.color }}
-                          initial={{ 
-                            x: '50%', 
-                            y: '50%', 
-                            opacity: 0 
-                          }}
-                          animate={{ 
-                            x: `${Math.random() * 100}%`,
-                            y: `${Math.random() * 100}%`,
-                            opacity: [0, 1, 0],
-                          }}
-                          transition={{ 
-                            duration: 1.5, 
-                            delay: i * 0.1,
-                            repeat: Infinity,
-                          }}
-                        />
-                      ))}
-                    </>
-                  )}
-                </motion.div>
-              </motion.div>
-            )
-          })}
-        </div>
+                  <Image src={post.image} alt={post.title} fill sizes="(min-width: 768px) 288px, 224px" className="object-cover" />
+                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-background/90 to-transparent">
+                    <p className="text-sm font-medium text-foreground truncate">{post.title.trim()}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Expanded view: grows out of the tapped post. Rendered in a portal so page-level

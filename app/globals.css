@@ -281,3 +281,19 @@ section {
 /* Quiet luxury: hairline rules and generous, unhurried type */
 h1, h2, h3 { letter-spacing: -0.01em; font-weight: 500; }
 ::selection { background: oklch(0.66 0.2 258 / 0.35); }
+
+/* Featured posts: horizontal bands that drift sideways */
+@keyframes posts-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes posts-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.posts-track { animation: posts-left 45s linear infinite; }
+.posts-track-right { animation-name: posts-right; }
+.posts-band:hover .posts-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .posts-track { animation: none; }
+}
