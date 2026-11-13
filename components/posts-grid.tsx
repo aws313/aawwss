@@ -100,7 +100,7 @@ export function PostsGrid() {
           alternating direction. Hovering a strip pauses it; tapping a tile opens it in place. */}
       <div className="space-y-4 md:space-y-6">
         {posts.map((post, bi) => (
-          <div key={post.id} className="posts-band overflow-hidden">
+          <div key={post.id} dir="ltr" className="posts-band overflow-hidden">
             <div className={`posts-track flex gap-3 md:gap-4 pe-3 md:pe-4 w-max ${bi % 2 === 0 ? 'posts-track-left' : 'posts-track-right'}`}>
               {[...tilesFor(post), ...tilesFor(post)].map((tile, i) => (
                 <button
