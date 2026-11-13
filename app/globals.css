@@ -297,3 +297,20 @@ h1, h2, h3 { letter-spacing: -0.01em; font-weight: 500; }
 @media (prefers-reduced-motion: reduce) {
   .posts-track { animation: none; }
 }
+
+/* Background design-tool icons: small, glowing blue, drifting slowly */
+@keyframes dtf-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(14px, -24px, 0) rotate(8deg); }
+}
+.dtf-float {
+  animation-name: dtf-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  color: oklch(0.7 0.18 258);
+  opacity: 0.45;
+  filter: drop-shadow(0 0 4px oklch(0.66 0.2 258 / 0.9)) drop-shadow(0 0 10px oklch(0.66 0.2 258 / 0.5));
+}
+@media (prefers-reduced-motion: reduce) {
+  .dtf-float { animation: none; }
+}
