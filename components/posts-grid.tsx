@@ -72,7 +72,7 @@ function PostsStrip({ post, dirSign, onOpen }: { post: typeof posts[0]; dirSign:
       st.moved += Math.abs(dx)
       // Capture the pointer only once it is clearly a drag, so a tap still reaches the tile
       if (!st.captured && st.moved > 4) {
-        band.setPointerCapture(e.pointerId)
+        try { band.setPointerCapture(e.pointerId) } catch { /* pointer already released */ }
         st.captured = true
       }
       if (dt > 0) st.vx = 0.6 * st.vx + 0.4 * (dx / dt)

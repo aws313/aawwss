@@ -50,7 +50,7 @@ export function useDragSpin(
       const dt = (now - st.lastT) / 1000
       st.moved += Math.abs(dx)
       if (!st.captured && st.moved > 4) {
-        stage.setPointerCapture(e.pointerId)
+        try { stage.setPointerCapture(e.pointerId) } catch { /* pointer already released */ }
         st.captured = true
       }
       if (dt > 0) st.vx = 0.6 * st.vx + 0.4 * (dx / dt)
