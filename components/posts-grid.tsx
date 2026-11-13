@@ -25,6 +25,125 @@ const posts = [
 // Each company image is a 3x3 collage; the nine tiles are cut into /images/posts/{id}-{0..8}.webp
 const tilesFor = (post: typeof posts[0]) => Array.from({ length: 9 }, (_, n) => `/images/posts/${post.id}-${n}.webp`)
 
+// One horizontal strip of a company's nine tiles. It keeps drifting on its own; a drag or
+// swipe takes control of it (faster, slower, or backwards), and it eases back to its drift speed.
+function PostsStrip({ post, dirSign, onOpen }: { post: typeof posts[0]; dirSign: 1 | -1; onOpen: (tile: string, el: HTMLElement) => void }) {
+  const bandRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const band = bandRef.current
+    const track = trackRef.current
+    if (!band || !track) return
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // W: width of one set of nine tiles. pos: how far the strip has scrolled, kept within one set.
+    const st = { W: track.scrollWidth / 2, pos: 0, v: 0, active: false, captured: false, lastX: 0, lastT: 0, vx: 0, moved: 0 }
+    let raf = 0
+    let last = 0
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.05)
+      last = now
+      if (!st.active) {
+        const base = reduce ? 0 : (st.W / 45) * dirSign // one full set every ~45 seconds
+        st.v += (base - st.v) * (1 - Math.exp(-dt * 2))  // ease back to the drift speed
+        st.pos += st.v * dt
+      }
+      st.pos = ((st.pos % st.W) + st.W) % st.W
+      track.style.transform = `translate3d(${-st.pos}px, 0, 0)`
+      raf = requestAnimationFrame(tick)
+    }
+
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      st.active = true
+      st.captured = false
+      st.lastX = e.clientX
+      st.lastT = performance.now()
+      st.vx = 0
+      st.moved = 0
+    }
+    const onMove = (e: PointerEvent) => {
+      if (!st.active) return
+      const now = performance.now()
+      const dx = e.clientX - st.lastX
+      const dt = (now - st.lastT) / 1000
+      st.moved += Math.abs(dx)
+      // Capture the pointer only once it is clearly a drag, so a tap still reaches the tile
+      if (!st.captured && st.moved > 4) {
+        band.setPointerCapture(e.pointerId)
+        st.captured = true
+      }
+      if (dt > 0) st.vx = 0.6 * st.vx + 0.4 * (dx / dt)
+      st.pos -= dx
+      st.lastX = e.clientX
+      st.lastT = now
+    }
+    const onUp = () => {
+      if (!st.active) return
+      st.active = false
+      // A release after a pause carries no momentum
+      const idle = performance.now() - st.lastT > 100
+      const limit = st.W * 3
+      st.v = idle ? 0 : Math.max(-limit, Math.min(limit, -st.vx))
+    }
+    // After a drag, swallow the click so releasing a drag does not open a tile
+    const onClickCapture = (e: MouseEvent) => {
+      if (st.moved > 6) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+    const onDragStart = (e: Event) => e.preventDefault()
+    const onResize = () => { st.W = track.scrollWidth / 2 }
+
+    band.addEventListener('pointerdown', onDown)
+    band.addEventListener('pointermove', onMove)
+    band.addEventListener('pointerup', onUp)
+    band.addEventListener('pointercancel', onUp)
+    band.addEventListener('click', onClickCapture, true)
+    band.addEventListener('dragstart', onDragStart)
+    window.addEventListener('resize', onResize)
+    raf = requestAnimationFrame((t) => { last = t; tick(t) })
+
+    return () => {
+      cancelAnimationFrame(raf)
+      band.removeEventListener('pointerdown', onDown)
+      band.removeEventListener('pointermove', onMove)
+      band.removeEventListener('pointerup', onUp)
+      band.removeEventListener('pointercancel', onUp)
+      band.removeEventListener('click', onClickCapture, true)
+      band.removeEventListener('dragstart', onDragStart)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [dirSign])
+
+  return (
+    <div
+      ref={bandRef}
+      dir="ltr"
+      className="posts-band overflow-hidden cursor-grab active:cursor-grabbing select-none"
+      style={{ touchAction: 'pan-y' }}
+    >
+      <div ref={trackRef} className="flex gap-3 md:gap-4 pe-3 md:pe-4 w-max will-change-transform">
+        {[...tilesFor(post), ...tilesFor(post)].map((tile, i) => (
+          <button
+            key={`${post.id}-${i}`}
+            type="button"
+            aria-label={post.title}
+            onClick={(e) => onOpen(tile, e.currentTarget as HTMLElement)}
+            className="relative shrink-0 w-40 md:w-56 aspect-square rounded-xl overflow-hidden border"
+            style={{ borderColor: `${post.color}40` }}
+          >
+            <Image src={tile} alt={post.title} fill sizes="(min-width: 768px) 224px, 160px" className="object-cover" draggable={false} />
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function PostsGrid() {
   const [selectedPost, setSelectedPost] = useState<typeof posts[0] | null>(null)
   const [selectedTile, setSelectedTile] = useState<string>('')
@@ -96,26 +215,16 @@ export function PostsGrid() {
         </h2>
       </motion.div>
 
-      {/* One horizontal strip per company, each showing its nine tiles. All strips move at once,
-          alternating direction. Hovering a strip pauses it; tapping a tile opens it in place. */}
+      {/* One horizontal strip per company, each showing its nine tiles. Strips keep drifting
+          on their own, alternating direction; drag or swipe a strip to move it yourself. */}
       <div className="space-y-4 md:space-y-6">
         {posts.map((post, bi) => (
-          <div key={post.id} dir="ltr" className="posts-band overflow-hidden">
-            <div className={`posts-track flex gap-3 md:gap-4 pe-3 md:pe-4 w-max ${bi % 2 === 0 ? 'posts-track-left' : 'posts-track-right'}`}>
-              {[...tilesFor(post), ...tilesFor(post)].map((tile, i) => (
-                <button
-                  key={`${post.id}-${i}`}
-                  type="button"
-                  aria-label={post.title}
-                  onClick={(e) => openFrom(post, tile, e.currentTarget as HTMLElement)}
-                  className="relative shrink-0 w-40 md:w-56 aspect-square rounded-xl overflow-hidden border"
-                  style={{ borderColor: `${post.color}40` }}
-                >
-                  <Image src={tile} alt={post.title} fill sizes="(min-width: 768px) 224px, 160px" className="object-cover" />
-                </button>
-              ))}
-            </div>
-          </div>
+          <PostsStrip
+            key={post.id}
+            post={post}
+            dirSign={bi % 2 === 0 ? 1 : -1}
+            onOpen={(tile, el) => openFrom(post, tile, el)}
+          />
         ))}
       </div>
 
