@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
+import { useDragSpin } from './use-drag-spin'
 
 // Print, branding and company-profile work
 const prints = [
@@ -21,6 +22,10 @@ const prints = [
 export function PrintSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const containerRef = useRef<HTMLElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
+  // The disc keeps turning; dragging it turns it by hand
+  useDragSpin(stageRef, ringRef, 42, 1)
   const isInView = useInView(containerRef, { once: true, margin: '-100px' })
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -57,13 +62,14 @@ export function PrintSection() {
 
       {/* Rotating disc of the nine pieces. Hovering pauses it; tapping a piece opens it. */}
       <motion.div
+        ref={stageRef}
         className="print-stage relative w-full max-w-5xl mx-auto h-[330px] md:h-[600px] flex items-center justify-center"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 1 }}
       >
         <div className="print-glow" />
-        <div className="print-ring">
+        <div ref={ringRef} className="print-ring">
           {prints.map((item, i) => (
             <div
               key={item.src}
@@ -85,7 +91,7 @@ export function PrintSection() {
         </div>
       </motion.div>
 
-      <p className="mt-6 text-center text-muted-foreground text-xs tracking-wide">مرّر المؤشر لإيقاف الدوران، وانقر لعرض التفاصيل</p>
+      <p className="mt-6 text-center text-muted-foreground text-xs tracking-wide">اسحب لتدوير القرص بيدك، وانقر لعرض التفاصيل</p>
 
       {/* Viewer: rendered in a portal so page transforms cannot shift the fixed overlay */}
       {mounted && createPortal(

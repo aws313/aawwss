@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import { motion, useInView, AnimatePresence, useAnimation } from 'framer-motion'
+import { useDragSpin } from './use-drag-spin'
 
 // Visual identity projects
 const identityProjects = [
@@ -51,10 +52,6 @@ const ringStyles = `
     width: 0;
     height: 0;
     transform-style: preserve-3d;
-    animation: identity-spin 36s linear infinite;
-  }
-  .identity-stage:hover .identity-ring {
-    animation-play-state: paused;
   }
   .identity-card {
     position: absolute;
@@ -81,6 +78,10 @@ export function SpiralGallery() {
   const cardControls = useAnimation()
   const pendingOpen = useRef(false)
   const containerRef = useRef<HTMLElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
+  // The ring keeps turning; dragging it turns it by hand
+  useDragSpin(stageRef, ringRef, 36, -1)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -167,6 +168,7 @@ export function SpiralGallery() {
 
       {/* Rotating ring of logos */}
       <motion.div
+        ref={stageRef}
         className="identity-stage relative w-full max-w-5xl h-[230px] md:h-[420px] flex items-center justify-center"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
@@ -178,7 +180,7 @@ export function SpiralGallery() {
           style={{ background: 'radial-gradient(circle, rgba(0, 212, 255, 0.35) 0%, transparent 70%)' }}
         />
 
-        <div className="identity-ring">
+        <div ref={ringRef} className="identity-ring">
           {identityProjects.map((project, index) => {
             const isHovered = hoveredId === project.id
             return (
@@ -240,7 +242,7 @@ export function SpiralGallery() {
         </div>
       </motion.div>
 
-      <p className="mt-6 text-muted-foreground text-xs tracking-wide">مرّر المؤشر لإيقاف الدوران، وانقر لعرض التفاصيل</p>
+      <p className="mt-6 text-muted-foreground text-xs tracking-wide">اسحب لتدوير الشعارات بيدك، وانقر لعرض التفاصيل</p>
 
       {/* Expanded view: grows out of the tapped logo. Rendered in a portal so that
           page-level transforms cannot shift the fixed overlay away from the viewport. */}

@@ -318,9 +318,7 @@ h1, h2, h3 { letter-spacing: -0.01em; font-weight: 500; }
   width: 0;
   height: 0;
   transform-style: preserve-3d;
-  animation: print-spin 42s linear infinite;
 }
-.print-stage:hover .print-ring { animation-play-state: paused; }
 .print-card {
   position: absolute;
   left: 0;
@@ -347,3 +345,6 @@ h1, h2, h3 { letter-spacing: -0.01em; font-weight: 500; }
 @media (prefers-reduced-motion: reduce) {
   .print-ring { animation: none; }
 }
+
+/* Rings can be dragged by hand; keep vertical page scrolling on touch screens */
+.identity-stage, .print-stage { touch-action: pan-y; user-select: none; }
