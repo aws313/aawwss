@@ -92,7 +92,7 @@ export function PostsGrid() {
       >
         <p className="text-accent text-sm tracking-[0.3em] uppercase mb-4">المعرض</p>
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-glow-magenta">
-          منشورات مميزة
+          تصاميم سوشيال ميديا
         </h2>
       </motion.div>
 

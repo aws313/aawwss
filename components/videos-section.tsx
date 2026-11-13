@@ -171,8 +171,8 @@ export function VideosSection() {
       >
         <p className="text-[oklch(0.6_0.2_280)] text-sm tracking-[0.3em] uppercase mb-4">عرض الأعمال</p>
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold">
-          <span className="text-glow-cyan">أعمال</span>{' '}
-          <span className="text-glow-magenta">الحركة</span>
+          <span className="text-glow-cyan">فيديوهات</span>{' '}
+          <span className="text-glow-magenta">المونتاج والموشن</span>
         </h2>
       </motion.div>
 

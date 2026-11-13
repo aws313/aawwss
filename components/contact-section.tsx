@@ -113,7 +113,7 @@ export function ContactSection() {
 
               {/* Instagram - formatted like phone card */}
               <motion.a
-                href="https://instagram.com/20_AW_"
+                href="https://instagram.com/aws_desi"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-4 p-4 rounded-xl glass-card group"
@@ -124,7 +124,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <span className="text-sm text-muted-foreground">انستقرام</span>
-                  <p className="text-foreground group-hover:text-primary transition-colors">@20_AW_</p>
+                  <p className="text-foreground group-hover:text-primary transition-colors">@aws_desi</p>
                 </div>
                 <ArrowUpRight className="w-5 h-5 text-muted-foreground mr-auto group-hover:text-primary transition-colors" />
               </motion.a>

@@ -6,6 +6,7 @@ import { HeroSection } from '@/components/hero-section'
 import { AboutSection } from '@/components/about-section'
 import { SpiralGallery } from '@/components/spiral-gallery'
 import { PostsGrid } from '@/components/posts-grid'
+import { PrintSection } from '@/components/print-section'
 import { VideosSection } from '@/components/videos-section'
 import { ContactSection } from '@/components/contact-section'
 import { Footer } from '@/components/footer'
@@ -32,6 +33,9 @@ export default function Home() {
         
         {/* Page 4: Posts Grid */}
         <PostsGrid />
+
+        {/* Print, branding and profiles */}
+        <PrintSection />
         
         {/* Page 5: Videos */}
         <VideosSection />

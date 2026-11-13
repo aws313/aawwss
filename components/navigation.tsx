@@ -7,7 +7,8 @@ import { Menu, X } from 'lucide-react'
 const navItems = [
   { name: 'عنِّي', href: '#about' },
   { name: 'الهويات', href: '#identities' },
-  { name: 'المنشورات', href: '#posts' },
+  { name: 'السوشيال ميديا', href: '#posts' },
+  { name: 'المطبوعات', href: '#print' },
   { name: 'الفيديوهات', href: '#videos' },
   { name: 'اتصل', href: '#contact' },
 ]
