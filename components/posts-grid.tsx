@@ -22,10 +22,12 @@ const posts = [
   { id: 12, title: '   شركة توصيل', likes: 5234, comments: 234, color: '#1e3a8a', size: 'large', image: '/images/26.webp' },
 ]
 
-const postBands = [0, 4, 8].map((from) => posts.slice(from, from + 4))
+// Each company image is a 3x3 collage; the nine tiles are cut into /images/posts/{id}-{0..8}.webp
+const tilesFor = (post: typeof posts[0]) => Array.from({ length: 9 }, (_, n) => `/images/posts/${post.id}-${n}.webp`)
 
 export function PostsGrid() {
   const [selectedPost, setSelectedPost] = useState<typeof posts[0] | null>(null)
+  const [selectedTile, setSelectedTile] = useState<string>('')
   const [origin, setOrigin] = useState<Origin | null>(null)
   const cardControls = useAnimation()
   const pendingOpen = useRef(false)
@@ -34,10 +36,11 @@ export function PostsGrid() {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
-  // Open the expanded view growing out of the tapped post
-  const openFrom = (post: typeof posts[0], el: HTMLElement) => {
+  // Open the expanded view growing out of the tapped tile
+  const openFrom = (post: typeof posts[0], tile: string, el: HTMLElement) => {
     pendingOpen.current = true
     setOrigin(measureOrigin(el, panelWidthFor(672)))
+    setSelectedTile(tile)
     setSelectedPost(post)
   }
 
@@ -93,25 +96,22 @@ export function PostsGrid() {
         </h2>
       </motion.div>
 
-      {/* Horizontal bands: each group is a strip that drifts sideways, alternating direction.
-          Hovering a band pauses it; tapping a card opens it in place. */}
-      <div className="space-y-6 md:space-y-8">
-        {postBands.map((band, bi) => (
-          <div key={bi} className="posts-band overflow-hidden">
-            <div className={`posts-track flex gap-4 md:gap-6 pe-4 md:pe-6 w-max ${bi % 2 === 0 ? 'posts-track-left' : 'posts-track-right'}`}>
-              {[...band, ...band].map((post, i) => (
+      {/* One horizontal strip per company, each showing its nine tiles. All strips move at once,
+          alternating direction. Hovering a strip pauses it; tapping a tile opens it in place. */}
+      <div className="space-y-4 md:space-y-6">
+        {posts.map((post, bi) => (
+          <div key={post.id} className="posts-band overflow-hidden">
+            <div className={`posts-track flex gap-3 md:gap-4 pe-3 md:pe-4 w-max ${bi % 2 === 0 ? 'posts-track-left' : 'posts-track-right'}`}>
+              {[...tilesFor(post), ...tilesFor(post)].map((tile, i) => (
                 <button
                   key={`${post.id}-${i}`}
                   type="button"
                   aria-label={post.title}
-                  onClick={(e) => openFrom(post, e.currentTarget as HTMLElement)}
-                  className="relative shrink-0 w-56 md:w-72 aspect-[4/5] rounded-2xl overflow-hidden border text-start"
+                  onClick={(e) => openFrom(post, tile, e.currentTarget as HTMLElement)}
+                  className="relative shrink-0 w-40 md:w-56 aspect-square rounded-xl overflow-hidden border"
                   style={{ borderColor: `${post.color}40` }}
                 >
-                  <Image src={post.image} alt={post.title} fill sizes="(min-width: 768px) 288px, 224px" className="object-cover" />
-                  <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-background/90 to-transparent">
-                    <p className="text-sm font-medium text-foreground truncate">{post.title.trim()}</p>
-                  </div>
+                  <Image src={tile} alt={post.title} fill sizes="(min-width: 768px) 224px, 160px" className="object-cover" />
                 </button>
               ))}
             </div>
@@ -151,11 +151,11 @@ export function PostsGrid() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Image area */}
-              <div className="aspect-video relative bg-black">
+              <div className="aspect-square max-h-[70vh] mx-auto relative bg-black">
                 {selectedPost.image && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black">
                     <Image
-                      src={selectedPost.image}
+                      src={selectedTile}
                       alt={selectedPost.title}
                       width={1600}
                       height={900}
