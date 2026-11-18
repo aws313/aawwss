@@ -80,9 +80,6 @@ export function AboutSection() {
               >
                 عنِّي
               </motion.p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                نبذة
-              </h2>
             </div>
 
             {/* Stats */}
