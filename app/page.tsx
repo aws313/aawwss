@@ -3,10 +3,10 @@
 import { Navigation } from '@/components/navigation'
 import { DesignToolField } from '@/components/design-tool-field'
 import { HeroSection } from '@/components/hero-section'
-import { AboutSection } from '@/components/about-section'
 import { SpiralGallery } from '@/components/spiral-gallery'
 import { PostsGrid } from '@/components/posts-grid'
 import { PrintSection } from '@/components/print-section'
+import { AboutSection } from '@/components/about-section'
 import { CvSection } from '@/components/cv-section'
 import { VideosSection } from '@/components/videos-section'
 import { ContactSection } from '@/components/contact-section'
@@ -26,10 +26,9 @@ export default function Home() {
         {/* Page 1: Hero with Logo */}
         <HeroSection />
         
-        {/* Page 2: About / Information */}
-        <AboutSection />
 
         {/* Resume, shown near the top before the works */}
+        <AboutSection />
         <CvSection />
         
         {/* Page 3: Visual Identities Spiral */}

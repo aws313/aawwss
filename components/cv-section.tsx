@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Briefcase, GraduationCap, MapPin, Phone, Mail, Instagram, Globe } from 'lucide-react'
+import { Briefcase, GraduationCap } from 'lucide-react'
 
 const experience = [
   {
@@ -74,14 +74,6 @@ const education = [
   'دبلوم تقني في الطرق والجسور',
 ]
 
-const contact = [
-  { icon: MapPin, label: 'بغداد، العراق', href: undefined },
-  { icon: Phone, label: '07715684737', href: 'tel:+9647715684737' },
-  { icon: Mail, label: 'aws44144@gmail.com', href: 'mailto:aws44144@gmail.com' },
-  { icon: Instagram, label: '@aws_desi', href: 'https://instagram.com/aws_desi' },
-  { icon: Globe, label: 'معرض الأعمال', href: 'https://aawwss-static.onrender.com/' },
-]
-
 export function CvSection() {
   const containerRef = useRef<HTMLElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: '-100px' })
@@ -101,40 +93,17 @@ export function CvSection() {
       </motion.div>
 
       <div className="max-w-5xl mx-auto space-y-16">
-        {/* Contact and summary */}
+        {/* Summary */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="grid md:grid-cols-[1fr_1.4fr] gap-8 items-start"
+          className="rounded-2xl border border-border/60 p-6 md:p-8"
         >
-          <div className="grid gap-3">
-            {contact.map((c) => {
-              const Icon = c.icon
-              const inner = (
-                <>
-                  <span className="w-10 h-10 rounded-full flex items-center justify-center border border-primary/40 bg-primary/10 text-primary">
-                    <Icon className="w-4 h-4" />
-                  </span>
-                  <span className="text-foreground" dir="ltr">{c.label}</span>
-                </>
-              )
-              return c.href ? (
-                <a key={c.label} href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="flex items-center gap-4 p-3 rounded-xl border border-border/60 hover:border-primary/60 transition-colors">
-                  {inner}
-                </a>
-              ) : (
-                <div key={c.label} className="flex items-center gap-4 p-3 rounded-xl border border-border/60">{inner}</div>
-              )
-            })}
-          </div>
-
-          <div className="rounded-2xl border border-border/60 p-6 md:p-8">
-            <h3 className="text-xl font-semibold text-foreground mb-4">الملخص المهني</h3>
-            <p className="text-muted-foreground leading-loose">
-              مصمم جرافيك ومونتير فيديو محترف بخبرة عملية تتجاوز 6 سنوات في تطوير الهويات البصرية، تصميم الحملات الإعلانية لمنصات التواصل الاجتماعي، وإنتاج الفيديوهات الترويجية والموشن جرافيك. أتمتع بقدرة عالية على تحويل الأفكار التسويقية إلى حلول بصرية متكاملة تعزز حضور العلامات التجارية وتدعم أهدافها البيعية، مع التزام تام بمعايير الجودة والدقة وسرعة التنفيذ.
-            </p>
-          </div>
+          <h3 className="text-xl font-semibold text-foreground mb-4">الملخص المهني</h3>
+          <p className="text-muted-foreground leading-loose">
+            مصمم جرافيك ومونتير فيديو محترف بخبرة عملية تتجاوز 6 سنوات في تطوير الهويات البصرية، تصميم الحملات الإعلانية لمنصات التواصل الاجتماعي، وإنتاج الفيديوهات الترويجية والموشن جرافيك. أتمتع بقدرة عالية على تحويل الأفكار التسويقية إلى حلول بصرية متكاملة تعزز حضور العلامات التجارية وتدعم أهدافها البيعية، مع التزام تام بمعايير الجودة والدقة وسرعة التنفيذ.
+          </p>
         </motion.div>
 
         {/* Experience timeline */}

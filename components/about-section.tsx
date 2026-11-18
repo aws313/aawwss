@@ -83,25 +83,6 @@ export function AboutSection() {
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                 نبذة
               </h2>
-              <motion.div
-                className="text-muted-foreground text-lg leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.4, duration: 0.6 }}
-              >
-                <p className="text-2xl font-semibold">المصمم اوس اركان</p>
-                <div className="text-sm mt-4 space-y-4">
-                  <p>
-                    أنا مصمم جرافيك ومعدل فيديوهات شغوف بعملي، أواكب باستمرار كل ما هو جديد في عالم التصميم والتقنيات الرقمية، واضعًا نصب عيني هدفًا واحدًا: <strong>الارتقاء بعلامات الشركات التجارية</strong> عبر ابتكار طرق عرض تناسب طبيعة أعمالها.
-                  </p>
-                  <p>
-                    بفضل خبرة طويلة وإتقان للأعمال الرقمية، أعمل على تقديم حلول بصرية متكاملة تجمع بين الإبداع والدقة. كما أنني أمتلك خبرة في <strong>تصميم صفحات الويب</strong>، وهو مجال توسعت فيه بعد دراستي الأكاديمية، مما أتاح لي الجمع بين الهوية البصرية والتواجد الرقمي للشركات بشكل متكامل.
-                  </p>
-                  <p>
-                    أسعى دائمًا إلى تقديم أعمال احترافية تعكس هوية العلامة التجارية وتمنحها حضورًا مميزًا في السوق، مع الالتزام بأعلى معايير الجودة والابتكار.
-                  </p>
-                </div>
-              </motion.div>
             </div>
 
             {/* Stats */}
@@ -130,28 +111,6 @@ export function AboutSection() {
               ))}
             </motion.div>
 
-            {/* Skills */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.8, duration: 0.6 }}
-            >
-              <p className="text-sm text-muted-foreground mb-4">المهارات</p>
-              <div className="flex flex-wrap gap-3">
-                {skills.map((skill, i) => (
-                  <motion.span
-                    key={skill}
-                    className="px-4 py-2 rounded-full text-sm border border-primary/30 text-primary hover:bg-primary/10 transition-colors cursor-default"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.9 + i * 0.05, duration: 0.3 }}
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
           </div>
         </div>
       </div>
