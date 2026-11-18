@@ -28,6 +28,9 @@ export default function Home() {
         
         {/* Page 2: About / Information */}
         <AboutSection />
+
+        {/* Resume, shown near the top before the works */}
+        <CvSection />
         
         {/* Page 3: Visual Identities Spiral */}
         <SpiralGallery />
@@ -41,9 +44,6 @@ export default function Home() {
         {/* Page 5: Videos */}
         <VideosSection />
         
-        {/* Resume */}
-        <CvSection />
-
         {/* Contact */}
         <ContactSection />
         
