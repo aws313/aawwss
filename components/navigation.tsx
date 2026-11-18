@@ -10,6 +10,7 @@ const navItems = [
   { name: 'السوشيال ميديا', href: '#posts' },
   { name: 'المطبوعات', href: '#print' },
   { name: 'الفيديوهات', href: '#videos' },
+  { name: 'السيرة', href: '#cv' },
   { name: 'اتصل', href: '#contact' },
 ]
 
